@@ -2,7 +2,7 @@
 // express.js instance, requires the config and routes files
 // and listens on a port. Start the application by running
 // 'node app.js' in your terminal
-
+// Hello World
 
 var express = require('express'),
     http = require('http'),
