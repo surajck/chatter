@@ -1,0 +1,43 @@
+body{
+	background-color: #DDD
+}
+
+#chat{
+	width: 500px;
+	margin: 0 auto;
+	height: 80vh;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#type{
+	position: fixed;
+	bottom: 30px;
+}
+
+#type button{
+	display: inline-block;
+	top: 0px;
+	position: absolute;
+	left: 426px;
+	height: 56px;
+	width: 60px;
+}
+
+#type .sendText{
+	height: 50px;
+}
+
+.nameTag{
+	font-family: sans-serif;
+	margin: 15px;
+	font-size: 20px;
+	color: green;
+}
+
+.chatText{
+	font-family: sans-serif;
+	font-style: italic;
+	color: #555;
+	font-weight: 600;
+}

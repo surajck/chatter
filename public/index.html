@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>NodeChat</title>
+	<link type="text/css" rel="stylesheet" href="style.css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+</head>
+<body>
+	<div id="login">
+		<div id="name">
+			Enter you name
+			<input type="text" id="nameText" name="" value="" placeholder="name">
+		</div>
+	</div>
+
+	<div id="chat">
+		<div id="scrollchat"></div>
+		<div id="type">
+			<textarea class="sendText" name="" rows="2" cols="50" style="display:inline-block"></textarea>
+			<button type="submit" onclick="sendMsg()" style="display:inline-block">Send</button>
+		</div>
+	</div>
+
+
+	<script type="text/javascript">
+		socket = io.connect('http://172.25.2.95');
+		socket.on('connect',function(){
+			console.log('Connected to the chatroom.')
+			socket.emit('newChat','dfdf');
+		})
+		socket.on('msg',function(data){
+			if(data.type == 'chat'){
+				var temp = '<p><span class="nameTag">'+data.nameTag+':</span><span class="chatText">'+data.chatText+'</span></p>'
+				$("#scrollchat").append(temp);
+				$("#scrollchat").animate({ scrollTop: $("#scrollchat")[0].scrollHeight}, 1000);
+			}
+		})
+
+		socket.emit('newChat','dfdf');
+
+		if(sessionStorage.username == undefined){
+			showLogin()
+		}
+		else showChat()
+
+		function showLogin(){
+			$('#chat').css('display','none')
+			$('#login').css('display','block')
+		}
+
+		function showChat(){
+			$('#login').css('display','none')
+			$('#chat').css('display','block')
+		}
+
+		$("#nameText").keyup(function (e) {
+			if (e.keyCode == 13) {
+				sessionStorage.username = $("#nameText").val();
+				showChat()
+			}
+		});
+
+		$("#type .sendText").keyup(function (e) {
+			if (e.keyCode == 13) {
+				sendMsg()
+			}
+		});
+
+		function sendMsg(){
+			var data = {
+				type:'chat',
+				nameTag:sessionStorage.username,
+				chatText:$(".sendText").val()
+			}
+			var temp = '<p><span class="nameTag">'+data.nameTag+':</span><span class="chatText">'+data.chatText+'</span></p>';
+			$("#scrollchat").append(temp);
+			$("#scrollchat").animate({ scrollTop: $("#scrollchat")[0].scrollHeight}, 1000);
+
+
+			socket.emit('newChat',data)
+			$(".sendText").val('');
+		}
+
+	</script>
+</body>
+</html>
